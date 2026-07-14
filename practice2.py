@@ -1,3 +1,4 @@
+#class 연습하기(붕어빵틀)
 class Company:
     def __init__(self, name, debt, equity):
         self.name = name
