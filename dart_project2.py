@@ -1,7 +1,8 @@
 import requests
 import pandas as pd
 
-api_key = "a4f83869d58d26298663d6cce0073e9c2116ef28"
+import os
+api_key = os.environ.get("DART_API_KEY")
 
 class Company:
     def __init__(self, name, corp_code):
@@ -24,7 +25,7 @@ class Company:
 
         try:
             for item in data["list"]:
-                if item["sj_div"] in ("BS", "IS", "CIS"): # 재무상태표, 손익계산서만 사용
+                if item["sj_div"] in ("BS", "IS", "CIS"): # 재무상태표, 손익계산서, 포괄손익계산서만 사용
                     name = item["account_nm"]
                     amount_str = item.get("thstrm_amount", "")
                     if amount_str and name not in self.accounts:
@@ -54,8 +55,8 @@ class Company:
         
     def get_inventory_turnover(self):
         try:
-            revenue = self.accounts.get("매출액") or self.accounts.get("수익(매출액)") or self.accounts.get("영업수익")    # 어떤 계정과목이 필요할까요?
-            inventory = self.accounts["재고자산"]     # 어떤 계정과목이 필요할까요?
+            revenue = self.accounts.get("매출액") or self.accounts.get("수익(매출액)") or self.accounts.get("영업수익")
+            inventory = self.accounts["재고자산"]    
             return round(revenue / inventory, 2)
         except (KeyError, ZeroDivisionError, TypeError):
             return None
