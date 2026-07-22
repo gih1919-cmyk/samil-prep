@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 tree = ET.parse("CORPCODE.xml")
 root = tree.getroot()
 
-target_name = "SK하이닉스"
+target_name = "야놀자"
 
 for company in root.findall("list"):
     name = company.find("corp_name").text
